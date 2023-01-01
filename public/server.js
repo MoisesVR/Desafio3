@@ -19,3 +19,30 @@ app.get("/posts", async (req, res) => {
     const posts = await obtenerPost();
     res.json(posts);
 })
+
+app.post("/posts", async (req, res) => {
+    const payload = req.body
+    const posts = await obtenerPost();
+    let comparison = 0;
+
+    if (payload.titulo && payload.url && payload.descripcion) {
+        posts.forEach(post => {
+            if (payload.url === post.img) {
+                comparison = 1;
+            } else {
+                comparison = 0;
+            }
+        })
+        if (comparison === 1) {
+            res.status(400)
+            res.send("La imagen ya existe")
+
+        } else if (comparison === 0) {
+            await agregarPost(payload);
+            res.send("Post agregado con exito")
+        }
+    } else {
+        res.status(400)
+        res.send({ "Mensaje": "Hay campos vacios o la imagen ya existe" })
+    }
+})

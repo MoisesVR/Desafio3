@@ -20,5 +20,26 @@ const obtenerPost = async () => {
 
 }
 
+const agregarPost = async (payload) => {
+    const SQLquery = {
+        text: 'INSERT INTO posts (titulo, img, descripcion, likes) VALUES($1,$2,$3,$4) RETURNING *',
+        values: [
+            payload.titulo,
+            payload.url,
+            payload.descripcion,
+            payload.likes
+        ]
+    }
+    try {
+        if(payload.url === payload.url){
+            console.log("La imagen ya existe")
+        }
+        const result = await pool.query(SQLquery)
+        return result.rows
+    } catch (e) {
+        console.log("error al insertar datos en tabla posts:", e.message)
+    }
+}
+
 module.exports = pool;
-module.exports = { obtenerPost };
+module.exports = { obtenerPost, agregarPost };
