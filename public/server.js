@@ -15,3 +15,7 @@ app.get("/", (req, res) => {
     res.sendFile(__dirname + "/public/index.html")
 })
 
+app.get("/posts", async (req, res) => {
+    const posts = await obtenerPost();
+    res.json(posts);
+})

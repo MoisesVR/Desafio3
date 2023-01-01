@@ -9,6 +9,16 @@ const pool = new Pool({
     allowExitOnIdle: true
 })
 
+const obtenerPost = async () => {
+    try {
+        const { rows } = await pool.query("SELECT * FROM posts");
+        console.log(rows);
+        return rows;
+    } catch (e) {
+        console.log("Error al traer los datos", e.message)
+    }
 
+}
 
 module.exports = pool;
+module.exports = { obtenerPost };
