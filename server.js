@@ -1,5 +1,5 @@
 const cors = require('cors');
-const { getPost, addPost, editPost } = require('./postsModel')
+const { getPost, addPost, editPost, deletePost } = require('./postsModel')
 const express = require('express');
 const app = express();
 
@@ -53,6 +53,17 @@ app.put("/posts/like/:id", async (req, res) => {
         const { id } = req.params
         await editPost(id, payload)
         res.send("Post modificado con exito")
+    } catch (e) {
+        res.status(500).send(e)
+    }
+})
+
+app.delete("/posts/:id", async (req, res) => {
+    try {
+        const payload = req.body
+        const { id } = req.params
+        await deletePost(id, payload)
+        res.send("Post eliminado con exito")
     } catch (e) {
         res.status(500).send(e)
     }   

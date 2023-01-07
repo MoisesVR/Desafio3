@@ -46,4 +46,19 @@ const editPost = async (id,payload) => {
     }
 }
 
-module.exports = { getPost, addPost, editPost };
+const deletePost = async (id,payload) => {
+    const SQLquery = {
+        text: 'DELETE FROM posts WHERE id = $1',
+        values: [
+            id
+        ]
+    }
+    try {
+        const result = await pool.query(SQLquery)
+        return result.rows
+    } catch (e) {
+        console.log(e.message)
+    }
+}
+
+module.exports = { getPost, addPost, editPost, deletePost };
