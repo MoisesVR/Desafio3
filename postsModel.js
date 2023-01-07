@@ -13,12 +13,11 @@ const getPost = async () => {
 
 const addPost = async (payload) => {
     const SQLquery = {
-        text: 'INSERT INTO posts (titulo, img, descripcion, likes) VALUES($1,$2,$3,$4) RETURNING *',
+        text: 'INSERT INTO posts (titulo, img, descripcion, likes) VALUES($1,$2,$3,0) RETURNING *',
         values: [
             payload.titulo,
             payload.url,
             payload.descripcion,
-            payload.likes
         ]
     }
     try {
@@ -32,4 +31,19 @@ const addPost = async (payload) => {
     }
 }
 
-module.exports = { getPost, addPost };
+const editPost = async (id,payload) => {
+    const SQLquery = {
+        text: 'UPDATE posts SET likes = likes + 1 WHERE id = $1 RETURNING *',
+        values: [
+            id
+        ]
+    }
+    try {
+        const result = await pool.query(SQLquery)
+        return result.rows
+    } catch (e) {
+        console.log(e.message)
+    }
+}
+
+module.exports = { getPost, addPost, editPost };

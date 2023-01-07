@@ -1,5 +1,5 @@
 const cors = require('cors');
-const { getPost, addPost } = require('./db')
+const { getPost, addPost, editPost } = require('./postsModel')
 const express = require('express');
 const app = express();
 
@@ -45,4 +45,15 @@ app.post("/posts", async (req, res) => {
         res.status(400)
         res.send({ "Mensaje": "Hay campos vacios o la imagen ya existe" })
     }
+})
+
+app.put("/posts/like/:id", async (req, res) => {
+    try {
+        const payload = req.body
+        const { id } = req.params
+        await editPost(id, payload)
+        res.send("Post modificado con exito")
+    } catch (e) {
+        res.status(500).send(e)
+    }   
 })
